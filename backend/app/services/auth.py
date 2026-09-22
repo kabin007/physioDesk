@@ -60,11 +60,15 @@ async def authenticate(session: AsyncSession, identifier: str, password: str) ->
 
 def issue_tokens(user: User) -> TokenResponse:
     access = create_token(
-        user_id=user.id, role=user.role, token_version=user.token_version,
+        user_id=user.id,
+        role=user.role,
+        token_version=user.token_version,
         token_type=TokenType.ACCESS,
     )
     refresh = create_token(
-        user_id=user.id, role=user.role, token_version=user.token_version,
+        user_id=user.id,
+        role=user.role,
+        token_version=user.token_version,
         token_type=TokenType.REFRESH,
     )
     return TokenResponse(

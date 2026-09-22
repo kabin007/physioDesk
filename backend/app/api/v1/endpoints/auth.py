@@ -2,12 +2,12 @@ from fastapi import APIRouter, status
 
 from app.api.dependencies import CurrentUser, DbSession
 from app.schemas.auth import LoginRequest, RefreshRequest, TokenResponse, UserRead
-from app.schemas.common import ErrorResponse
+from app.schemas.common import error_responses
 from app.services import auth as auth_service
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-_UNAUTHORIZED = {status.HTTP_401_UNAUTHORIZED: {"model": ErrorResponse}}
+_UNAUTHORIZED = error_responses(status.HTTP_401_UNAUTHORIZED)
 
 
 @router.post(

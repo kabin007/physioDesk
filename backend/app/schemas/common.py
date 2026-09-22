@@ -4,7 +4,7 @@ import math
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import time
-from typing import Annotated, ClassVar, Self
+from typing import Annotated, Any, ClassVar, Self
 
 from pydantic import (
     AfterValidator,
@@ -62,7 +62,6 @@ Phone = Annotated[
         strip_whitespace=True, min_length=7, max_length=20, pattern=r"^\+?[0-9][0-9 ()\-]{5,18}$"
     ),
 ]
-
 
 
 def _whole_minutes(value: time) -> time:
@@ -123,3 +122,8 @@ class ErrorDetail(BaseModel):
 
 class ErrorResponse(BaseModel):
     detail: ErrorDetail
+
+
+def error_responses(*status_codes: int) -> dict[int | str, dict[str, Any]]:
+    """OpenAPI `responses=` entries documenting the shared error body for these codes."""
+    return {code: {"model": ErrorResponse} for code in status_codes}

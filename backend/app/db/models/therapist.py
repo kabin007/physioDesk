@@ -1,5 +1,5 @@
+import datetime as dt
 import uuid
-from datetime import date, time
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
@@ -42,8 +42,8 @@ class Therapist(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     # A small fixed-domain set that is always read and written as a whole; a Postgres array
     # is simpler than a join table and still constrained by the CHECK above.
     working_days: Mapped[list[int]] = mapped_column(ARRAY(SmallInteger))
-    start_time: Mapped[time] = mapped_column(Time)
-    end_time: Mapped[time] = mapped_column(Time)
+    start_time: Mapped[dt.time] = mapped_column(Time)
+    end_time: Mapped[dt.time] = mapped_column(Time)
     slot_duration_minutes: Mapped[int] = mapped_column(SmallInteger)
     is_active: Mapped[bool] = mapped_column(Boolean, server_default=text("true"), index=True)
 
@@ -76,13 +76,12 @@ class TherapistScheduleOverride(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )
 
     # Overrides are schedule configuration, not history: they go with their therapist.
-    therapist_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("therapists.id", ondelete="CASCADE")
-    )
-    date: Mapped[date] = mapped_column(Date)
+    therapist_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("therapists.id", ondelete="CASCADE"))
+    # `dt.date`: a bare `date` annotation would resolve to this very attribute.
+    date: Mapped[dt.date] = mapped_column(Date)
     is_day_off: Mapped[bool] = mapped_column(Boolean)
-    start_time: Mapped[time | None] = mapped_column(Time)
-    end_time: Mapped[time | None] = mapped_column(Time)
+    start_time: Mapped[dt.time | None] = mapped_column(Time)
+    end_time: Mapped[dt.time | None] = mapped_column(Time)
     note: Mapped[str | None] = mapped_column(String(255))
 
     therapist: Mapped[Therapist] = relationship(back_populates="schedule_overrides")

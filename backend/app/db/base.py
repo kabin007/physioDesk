@@ -2,7 +2,6 @@
 
 import uuid
 from datetime import datetime
-from typing import Any, ClassVar
 
 from sqlalchemy import DateTime, MetaData, func, text
 from sqlalchemy.dialects.postgresql import UUID
@@ -24,7 +23,8 @@ class Base(DeclarativeBase):
 
     # Fetch server-generated values (ids, timestamps, computed columns) via RETURNING on
     # INSERT *and* UPDATE, so async code never triggers an implicit lazy refresh.
-    __mapper_args__: ClassVar[dict[str, Any]] = {"eager_defaults": True}
+    # SQLAlchemy types this as an instance attribute, so it cannot be annotated ClassVar.
+    __mapper_args__ = {"eager_defaults": True}  # noqa: RUF012
 
 
 class UUIDPrimaryKeyMixin:

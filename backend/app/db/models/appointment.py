@@ -51,7 +51,9 @@ class Appointment(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         ForeignKey("patients.id", ondelete="RESTRICT"), index=True
     )
     # Indexed via the composite (therapist_id, appointment_date) index in __table_args__.
-    therapist_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("therapists.id", ondelete="RESTRICT"))
+    therapist_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("therapists.id", ondelete="RESTRICT")
+    )
     appointment_date: Mapped[date] = mapped_column(Date, index=True)
     start_time: Mapped[time] = mapped_column(Time)
     end_time: Mapped[time] = mapped_column(Time)
