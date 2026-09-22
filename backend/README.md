@@ -15,7 +15,7 @@ with double-booking prevention, billing and a live dashboard.
 | OpenAPI schema | `http://localhost:8000/openapi.json` |
 | Health | `GET /health` (liveness), `GET /health/ready` (checks the database) |
 
-The API is a stable contract for the Next.js frontend (Phase 2). Every route except
+The API is the contract for the Next.js frontend in [`../frontend`](../frontend). Every route except
 `/auth/login` and `/auth/refresh` requires a bearer access token.
 
 ## Tech Stack
