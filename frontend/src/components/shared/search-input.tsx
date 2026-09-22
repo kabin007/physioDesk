@@ -1,29 +1,37 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
 
 interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
   label: string;
+  delayMs?: number;
 }
 
-/** Debounced search box: `onChange` fires 300ms after typing stops. */
-export function SearchInput({ value, onChange, placeholder, label }: SearchInputProps) {
+/** Debounced search box: `onChange` fires once typing pauses. */
+export function SearchInput({ value, onChange, placeholder, label, delayMs = 300 }: SearchInputProps) {
   const [draft, setDraft] = useState(value);
-  const debounced = useDebouncedValue(draft);
+  const [synced, setSynced] = useState(value);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  // Keep the box in sync when the value changes externally (e.g. "Clear filters").
-  useEffect(() => setDraft(value), [value]);
-  useEffect(() => {
-    if (debounced !== value) onChange(debounced);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only react to typing
-  }, [debounced]);
+  // Follow external changes (e.g. "Clear filters") by adjusting state during render.
+  if (value !== synced) {
+    setSynced(value);
+    setDraft(value);
+  }
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  function update(next: string, immediate = false) {
+    setDraft(next);
+    clearTimeout(timer.current);
+    if (immediate) onChange(next);
+    else timer.current = setTimeout(() => onChange(next), delayMs);
+  }
 
   return (
     <div className="relative w-full sm:w-72">
@@ -35,14 +43,14 @@ export function SearchInput({ value, onChange, placeholder, label }: SearchInput
         type="search"
         aria-label={label}
         value={draft}
-        onChange={(event) => setDraft(event.target.value)}
+        onChange={(event) => update(event.target.value)}
         placeholder={placeholder}
         className="pr-8 pl-9 [&::-webkit-search-cancel-button]:hidden"
       />
       {draft && (
         <button
           type="button"
-          onClick={() => setDraft("")}
+          onClick={() => update("", true)}
           className="absolute top-1/2 right-2 flex size-6 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:text-foreground"
           aria-label="Clear search"
         >
