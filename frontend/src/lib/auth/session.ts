@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useSyncExternalStore } from "react";
 
 import * as authApi from "@/lib/api/auth";
 import { queryKeys } from "@/lib/query/keys";
@@ -15,27 +16,41 @@ import type { User, UserRole } from "@/types/api";
 export interface Permissions {
   manageTherapists: boolean;
   manageInvoices: boolean;
+  /** Known STAFF user: billing and therapists are read-only. */
+  readOnlyAdminAreas: boolean;
 }
 
 export function permissionsFor(role: UserRole | undefined): Permissions {
   const isAdmin = role === "ADMIN";
-  return { manageTherapists: isAdmin, manageInvoices: isAdmin };
+  return { manageTherapists: isAdmin, manageInvoices: isAdmin, readOnlyAdminAreas: role === "STAFF" };
 }
 
-export function useSession() {
-  return useQuery({
+const subscribeNever = () => () => {};
+
+/**
+ * True after hydration. During hydration React uses the server snapshot (false), so
+ * session-dependent UI renders identically on the server and in the first client pass,
+ * even for Suspense boundaries that hydrate after the session query has resolved.
+ */
+function useHydrated(): boolean {
+  return useSyncExternalStore(subscribeNever, () => true, () => false);
+}
+
+export function useSession(): { user: User | undefined; isPending: boolean } {
+  const hydrated = useHydrated();
+  const query = useQuery({
     queryKey: queryKeys.session,
     queryFn: authApi.getSession,
     staleTime: 5 * 60_000,
   });
-}
-
-export function useCurrentUser(): User | undefined {
-  return useSession().data;
+  return {
+    user: hydrated ? query.data : undefined,
+    isPending: !hydrated || query.isPending,
+  };
 }
 
 export function usePermissions(): Permissions {
-  return permissionsFor(useSession().data?.role);
+  return permissionsFor(useSession().user?.role);
 }
 
 export function useLogout() {

@@ -68,7 +68,7 @@ function initials(name: string): string {
 }
 
 function UserMenu() {
-  const { data: user, isPending } = useSession();
+  const { user, isPending } = useSession();
   const logout = useLogout();
 
   return (

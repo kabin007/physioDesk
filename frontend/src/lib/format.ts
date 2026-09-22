@@ -62,30 +62,33 @@ export function minutesOf(time: string): number {
 
 // --- Instants -----------------------------------------------------------------------------
 
-const instantDate = new Intl.DateTimeFormat("en-GB", {
+const clinicParts = new Intl.DateTimeFormat("en-CA", {
   timeZone: CLINIC_TIMEZONE,
-  day: "numeric",
-  month: "short",
   year: "numeric",
-});
-const instantDateTime = new Intl.DateTimeFormat("en-GB", {
-  timeZone: CLINIC_TIMEZONE,
-  day: "numeric",
-  month: "short",
-  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
   hour: "2-digit",
   minute: "2-digit",
-  hour12: false,
+  hourCycle: "h23",
 });
+
+/** An instant expressed as clinic-local "YYYY-MM-DD" and "HH:MM". */
+function toClinicLocal(value: string): { date: string; time: string } {
+  const parts = Object.fromEntries(
+    clinicParts.formatToParts(new Date(value)).map((part) => [part.type, part.value]),
+  );
+  return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
+}
 
 /** "22 Sep 2026" in the clinic timezone. */
 export function formatInstantDate(value: string): string {
-  return instantDate.format(new Date(value));
+  return formatDate(toClinicLocal(value).date);
 }
 
 /** "22 Sep 2026, 14:05" in the clinic timezone. */
 export function formatInstantDateTime(value: string): string {
-  return instantDateTime.format(new Date(value));
+  const local = toClinicLocal(value);
+  return `${formatDate(local.date)}, ${local.time}`;
 }
 
 /** "3 days ago" */
