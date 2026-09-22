@@ -27,7 +27,8 @@ function buildQuery(params?: QueryParams): string {
 function redirectToLogin() {
   if (typeof window === "undefined" || window.location.pathname === "/login") return;
   const next = window.location.pathname + window.location.search;
-  window.location.assign(`/login?next=${encodeURIComponent(next)}`);
+  // A full page load (not client routing) so no cached data of the old session survives.
+  window.location.replace(`${window.location.origin}/login?next=${encodeURIComponent(next)}`);
 }
 
 export async function request<T>(url: string, options: RequestOptions = {}): Promise<T> {
