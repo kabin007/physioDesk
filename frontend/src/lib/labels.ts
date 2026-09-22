@@ -41,6 +41,11 @@ export const INVOICE_STATUS: Record<InvoiceStatus, StatusMeta> = {
   VOID: { label: "Void", tone: "danger", icon: "ban" },
 };
 
+export const THERAPIST_STATUS: Record<"ACTIVE" | "INACTIVE", StatusMeta> = {
+  ACTIVE: { label: "Active", tone: "success", icon: "dot" },
+  INACTIVE: { label: "Inactive", tone: "neutral", icon: "pause" },
+};
+
 export const GENDER_LABEL: Record<Gender, string> = {
   FEMALE: "Female",
   MALE: "Male",
