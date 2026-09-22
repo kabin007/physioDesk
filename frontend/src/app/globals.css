@@ -1,0 +1,164 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * PhysioDesk design system (fixed by the assignment brief).
+ * Structural roles: primary / secondary / tertiary. Status roles are used only for status
+ * pills and badges.
+ */
+:root {
+  /* Brand */
+  --pd-primary: #b8763a;
+  --pd-primary-ink: #5c3a17; /* text on primary-soft */
+  --pd-primary-soft: #f0dfc7;
+  --pd-secondary: #132420; /* sidebar */
+  --pd-secondary-light: #1d362f; /* sidebar hover / active */
+  --pd-tertiary: #4f7c63;
+  --pd-tertiary-soft: #e1ebe3;
+
+  /* Surfaces & text */
+  --pd-background: #f6f3ea;
+  --pd-surface: #ffffff;
+  --pd-border: #e4dfd1;
+  --pd-text: #1c2622;
+  --pd-text-muted: #797365;
+
+  /* Status */
+  --pd-success: #4f7c63;
+  --pd-success-soft: #e1ebe3;
+  --pd-danger: #b5493b;
+  --pd-danger-soft: #f3deda;
+  --pd-neutral: #5e6b78;
+  --pd-neutral-soft: #e7ebee;
+
+  /* shadcn semantic tokens mapped onto the palette */
+  --background: var(--pd-background);
+  --foreground: var(--pd-text);
+  --card: var(--pd-surface);
+  --card-foreground: var(--pd-text);
+  --popover: var(--pd-surface);
+  --popover-foreground: var(--pd-text);
+  --primary: var(--pd-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--pd-surface);
+  --secondary-foreground: var(--pd-text);
+  --muted: var(--pd-background);
+  --muted-foreground: var(--pd-text-muted);
+  --accent: var(--pd-background);
+  --accent-foreground: var(--pd-text);
+  --destructive: var(--pd-danger);
+  --border: var(--pd-border);
+  --input: var(--pd-border);
+  --ring: var(--pd-primary);
+  --radius: 0.625rem;
+
+  --sidebar: var(--pd-secondary);
+  --sidebar-foreground: #e9e4d6;
+  --sidebar-primary: var(--pd-primary);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--pd-secondary-light);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: var(--pd-secondary-light);
+  --sidebar-ring: var(--pd-primary);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Design-system palette as utilities: bg-primary-soft, text-primary-ink, ... */
+  --color-primary-ink: var(--pd-primary-ink);
+  --color-primary-soft: var(--pd-primary-soft);
+  --color-secondary-dark: var(--pd-secondary);
+  --color-secondary-light: var(--pd-secondary-light);
+  --color-tertiary: var(--pd-tertiary);
+  --color-tertiary-soft: var(--pd-tertiary-soft);
+  --color-surface: var(--pd-surface);
+  --color-success: var(--pd-success);
+  --color-success-soft: var(--pd-success-soft);
+  --color-danger: var(--pd-danger);
+  --color-danger-soft: var(--pd-danger-soft);
+  --color-neutral: var(--pd-neutral);
+  --color-neutral-soft: var(--pd-neutral-soft);
+
+  /* Typography: Inter (UI), Fraunces (display), IBM Plex Mono (data) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-card: 14px;
+
+  --shadow-card: 0 1px 2px rgb(28 38 34 / 0.04), 0 2px 6px rgb(28 38 34 / 0.03);
+  --shadow-overlay: 0 12px 32px rgb(28 38 34 / 0.14), 0 2px 6px rgb(28 38 34 / 0.06);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    font-feature-settings: "cv11", "ss01";
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  /* Keyboard focus is always visible. */
+  :focus-visible {
+    outline: 2px solid var(--pd-primary);
+    outline-offset: 2px;
+  }
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Muted diagonal hatch for unavailable time (therapist off / outside hours). */
+  .bg-hatch {
+    background-color: #f1eee5;
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 7px,
+      rgb(121 115 101 / 0.09) 7px 8px
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
