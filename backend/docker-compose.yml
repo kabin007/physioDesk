@@ -1,0 +1,34 @@
+name: physiodesk
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-physiodesk}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-physiodesk}
+      POSTGRES_DB: ${POSTGRES_DB:-physiodesk}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  api:
+    build: .
+    profiles: ["full"]
+    env_file: .env
+    environment:
+      # Inside the compose network the database is reachable as `db:5432`.
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-physiodesk}:${POSTGRES_PASSWORD:-physiodesk}@db:5432/${POSTGRES_DB:-physiodesk}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
