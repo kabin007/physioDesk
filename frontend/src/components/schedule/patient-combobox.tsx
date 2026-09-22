@@ -71,11 +71,18 @@ export function PatientCombobox({ id, value, onChange, invalid }: PatientCombobo
                   key={patient.id}
                   value={patient.id}
                   onSelect={() => {
-                    onChange({ id: patient.id, full_name: patient.full_name, phone: patient.phone });
+                    onChange({
+                      id: patient.id,
+                      full_name: patient.full_name,
+                      phone: patient.phone,
+                    });
                     setOpen(false);
                   }}
                 >
-                  <Check className={cn(value?.id === patient.id ? "opacity-100" : "opacity-0")} aria-hidden />
+                  <Check
+                    className={cn(value?.id === patient.id ? "opacity-100" : "opacity-0")}
+                    aria-hidden
+                  />
                   <span className="flex-1 truncate">{patient.full_name}</span>
                   <span className="font-mono text-xs text-muted-foreground">{patient.phone}</span>
                 </CommandItem>

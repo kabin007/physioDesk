@@ -28,11 +28,7 @@ import { useInvalidateAppointments } from "@/hooks/use-invalidate-appointments";
 import { cancelAppointment, getAppointment, updateAppointment } from "@/lib/api/appointments";
 import { ApiError, errorMessage } from "@/lib/api/errors";
 import { clinicToday, formatLongDate, formatShortDate, formatTimeRange } from "@/lib/format";
-import {
-  APPOINTMENT_STATUS,
-  PAYMENT_METHOD_LABEL,
-  SESSION_TYPE_LABEL,
-} from "@/lib/labels";
+import { APPOINTMENT_STATUS, PAYMENT_METHOD_LABEL, SESSION_TYPE_LABEL } from "@/lib/labels";
 import { queryKeys } from "@/lib/query/keys";
 import {
   BOOKING_CONFLICT_MESSAGES,
@@ -49,11 +45,16 @@ interface AppointmentDetailDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function AppointmentDetailDialog({ appointmentId, onOpenChange }: AppointmentDetailDialogProps) {
+export function AppointmentDetailDialog({
+  appointmentId,
+  onOpenChange,
+}: AppointmentDetailDialogProps) {
   return (
     <Dialog open={Boolean(appointmentId)} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[640px]">
-        {appointmentId && <AppointmentDetail id={appointmentId} onClose={() => onOpenChange(false)} />}
+        {appointmentId && (
+          <AppointmentDetail id={appointmentId} onClose={() => onOpenChange(false)} />
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -89,7 +90,11 @@ function AppointmentDetail({ id, onClose }: { id: string; onClose: () => void })
   return mode === "reschedule" ? (
     <RescheduleForm appointment={data} onBack={() => setMode("view")} />
   ) : (
-    <AppointmentSummary appointment={data} onReschedule={() => setMode("reschedule")} onClose={onClose} />
+    <AppointmentSummary
+      appointment={data}
+      onReschedule={() => setMode("reschedule")}
+      onClose={onClose}
+    />
   );
 }
 
@@ -130,20 +135,34 @@ function AppointmentSummary({
     {
       label: "Patient",
       value: (
-        <Link href={`/patients/${appointment.patient.id}`} className="font-medium hover:text-primary" onClick={onClose}>
+        <Link
+          href={`/patients/${appointment.patient.id}`}
+          className="font-medium hover:text-primary"
+          onClick={onClose}
+        >
           {appointment.patient.full_name}
         </Link>
       ),
     },
-    { label: "Therapist", value: `${appointment.therapist.name} · ${appointment.therapist.specialty}` },
+    {
+      label: "Therapist",
+      value: `${appointment.therapist.name} · ${appointment.therapist.specialty}`,
+    },
     { label: "Date", value: formatLongDate(appointment.appointment_date) },
     {
       label: "Time",
-      value: <span className="font-mono">{formatTimeRange(appointment.start_time, appointment.end_time)}</span>,
+      value: (
+        <span className="font-mono">
+          {formatTimeRange(appointment.start_time, appointment.end_time)}
+        </span>
+      ),
     },
     { label: "Session type", value: SESSION_TYPE_LABEL[appointment.session_type] },
     { label: "Payment method", value: PAYMENT_METHOD_LABEL[appointment.payment_method] },
-    { label: "Notes", value: appointment.notes ?? <span className="text-muted-foreground">No notes</span> },
+    {
+      label: "Notes",
+      value: appointment.notes ?? <span className="text-muted-foreground">No notes</span>,
+    },
   ];
 
   return (
@@ -177,7 +196,11 @@ function AppointmentSummary({
       <DialogFooter className="sm:justify-between">
         {isBooked ? (
           <>
-            <Button variant="ghost" className="text-danger hover:text-danger" onClick={() => setConfirmCancel(true)}>
+            <Button
+              variant="ghost"
+              className="text-danger hover:text-danger"
+              onClick={() => setConfirmCancel(true)}
+            >
               <XCircle aria-hidden />
               Cancel appointment
             </Button>
@@ -229,7 +252,10 @@ function RescheduleForm({ appointment, onBack }: { appointment: Appointment; onB
     },
   });
   const { errors } = form.formState;
-  const [therapistId, date] = useWatch({ control: form.control, name: ["therapist_id", "appointment_date"] });
+  const [therapistId, date] = useWatch({
+    control: form.control,
+    name: ["therapist_id", "appointment_date"],
+  });
 
   const reschedule = useMutation({
     mutationFn: (values: RescheduleValues) => updateAppointment(appointment.id, values),
@@ -258,7 +284,8 @@ function RescheduleForm({ appointment, onBack }: { appointment: Appointment; onB
         <DialogDescription>
           {appointment.patient.full_name} is currently booked on{" "}
           {formatShortDate(appointment.appointment_date)} at{" "}
-          <span className="font-mono">{appointment.start_time}</span> with {appointment.therapist.name}.
+          <span className="font-mono">{appointment.start_time}</span> with{" "}
+          {appointment.therapist.name}.
         </DialogDescription>
       </DialogHeader>
 
@@ -277,7 +304,11 @@ function RescheduleForm({ appointment, onBack }: { appointment: Appointment; onB
           </InlineAlert>
         )}
         <div className="grid gap-4 sm:grid-cols-2">
-          <FormField id="reschedule-therapist" label="Therapist" error={errors.therapist_id?.message}>
+          <FormField
+            id="reschedule-therapist"
+            label="Therapist"
+            error={errors.therapist_id?.message}
+          >
             <Controller
               control={form.control}
               name="therapist_id"

@@ -67,13 +67,23 @@ export function ScheduleView() {
       <Panel className="overflow-hidden">
         <div className="flex flex-col gap-2 border-b border-border p-3 lg:flex-row lg:items-center">
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="icon" aria-label="Previous day" onClick={() => goTo(shiftDate(date, -1))}>
+            <Button
+              variant="secondary"
+              size="icon"
+              aria-label="Previous day"
+              onClick={() => goTo(shiftDate(date, -1))}
+            >
               <ChevronLeft />
             </Button>
             <Button variant="secondary" onClick={() => goTo(today)} disabled={date === today}>
               Today
             </Button>
-            <Button variant="secondary" size="icon" aria-label="Next day" onClick={() => goTo(shiftDate(date, 1))}>
+            <Button
+              variant="secondary"
+              size="icon"
+              aria-label="Next day"
+              onClick={() => goTo(shiftDate(date, 1))}
+            >
               <ChevronRight />
             </Button>
             <DatePicker value={date} onChange={goTo} className="w-44 justify-start font-normal" />
@@ -108,7 +118,11 @@ export function ScheduleView() {
             isToday={date === today}
             onAppointment={setAppointmentId}
             onOpenSlot={(therapist, slot) =>
-              setBooking({ therapistId: therapist.therapist_id, date: therapist.date, startTime: slot.start_time })
+              setBooking({
+                therapistId: therapist.therapist_id,
+                date: therapist.date,
+                startTime: slot.start_time,
+              })
             }
           />
         )}
@@ -119,7 +133,10 @@ export function ScheduleView() {
         onOpenChange={(open) => !open && closeBooking()}
         initial={bookingPrefill ?? undefined}
       />
-      <AppointmentDetailDialog appointmentId={appointmentId} onOpenChange={(open) => !open && setAppointmentId(null)} />
+      <AppointmentDetailDialog
+        appointmentId={appointmentId}
+        onOpenChange={(open) => !open && setAppointmentId(null)}
+      />
     </>
   );
 }
@@ -132,7 +149,10 @@ function Legend() {
     { label: "Unavailable", swatch: "bg-hatch border border-border" },
   ];
   return (
-    <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground lg:ml-auto" aria-label="Legend">
+    <ul
+      className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground lg:ml-auto"
+      aria-label="Legend"
+    >
       {items.map((item) => (
         <li key={item.label} className="flex items-center gap-1.5">
           <span className={`inline-block h-3 w-4 rounded-[3px] ${item.swatch}`} aria-hidden />

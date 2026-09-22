@@ -5,7 +5,12 @@ import { WEEKDAYS } from "@/lib/labels";
 /** Compact M T W T F S S indicator of the weekly working days. */
 export function WorkingDays({ days }: { days: number[] }) {
   return (
-    <span className="inline-flex gap-1" aria-label={WEEKDAYS.filter((d) => days.includes(d.value)).map((d) => d.long).join(", ")}>
+    <span
+      className="inline-flex gap-1"
+      aria-label={WEEKDAYS.filter((d) => days.includes(d.value))
+        .map((d) => d.long)
+        .join(", ")}
+    >
       {WEEKDAYS.map((day) => {
         const on = days.includes(day.value);
         return (

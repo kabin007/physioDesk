@@ -20,9 +20,19 @@ interface FilterSelectProps {
 }
 
 /** Toolbar dropdown filter with an "All …" option that clears the filter. */
-export function FilterSelect({ label, allLabel, value, options, onChange, className }: FilterSelectProps) {
+export function FilterSelect({
+  label,
+  allLabel,
+  value,
+  options,
+  onChange,
+  className,
+}: FilterSelectProps) {
   return (
-    <Select value={value ?? ALL} onValueChange={(next) => onChange(next === ALL ? undefined : next)}>
+    <Select
+      value={value ?? ALL}
+      onValueChange={(next) => onChange(next === ALL ? undefined : next)}
+    >
       <SelectTrigger aria-label={label} className={className ?? "w-full sm:w-44"}>
         <SelectValue />
       </SelectTrigger>

@@ -45,7 +45,11 @@ export function OverrideDialog({ therapist, open, onOpenChange, override }: Over
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[560px]">
-        <OverrideForm therapist={therapist} override={override} onDone={() => onOpenChange(false)} />
+        <OverrideForm
+          therapist={therapist}
+          override={override}
+          onDone={() => onOpenChange(false)}
+        />
       </DialogContent>
     </Dialog>
   );
@@ -84,7 +88,8 @@ function OverrideForm({
       onDone();
     },
     onError: (error) => {
-      if (error instanceof ApiError && (error.status === 409 || error.status === 400)) setProblem(error);
+      if (error instanceof ApiError && (error.status === 409 || error.status === 400))
+        setProblem(error);
       else toast.error(errorMessage(error));
     },
   });
@@ -112,7 +117,8 @@ function OverrideForm({
             <ScheduleConflictAlert detail={problem.message} />
           ) : problem.code === "SCHEDULE_OVERRIDE_EXISTS" ? (
             <InlineAlert tone="warning">
-              There&apos;s already an override for this date. Edit that override instead, or pick another date.
+              There&apos;s already an override for this date. Edit that override instead, or pick
+              another date.
             </InlineAlert>
           ) : (
             <InlineAlert>{problem.message}</InlineAlert>
@@ -124,7 +130,12 @@ function OverrideForm({
               control={form.control}
               name="date"
               render={({ field }) => (
-                <DatePicker id="override-date" value={field.value} min={clinicToday()} onChange={field.onChange} />
+                <DatePicker
+                  id="override-date"
+                  value={field.value}
+                  min={clinicToday()}
+                  onChange={field.onChange}
+                />
               )}
             />
           </FormField>
@@ -141,8 +152,12 @@ function OverrideForm({
                   onValueChange={(value) => value && field.onChange(value)}
                   className="w-full"
                 >
-                  <ToggleGroupItem value="DAY_OFF" className="flex-1">Day off</ToggleGroupItem>
-                  <ToggleGroupItem value="CUSTOM_HOURS" className="flex-1">Custom hours</ToggleGroupItem>
+                  <ToggleGroupItem value="DAY_OFF" className="flex-1">
+                    Day off
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="CUSTOM_HOURS" className="flex-1">
+                    Custom hours
+                  </ToggleGroupItem>
                 </ToggleGroup>
               )}
             />
@@ -152,16 +167,32 @@ function OverrideForm({
         {kind === "CUSTOM_HOURS" && (
           <div className="grid gap-4 sm:grid-cols-2">
             <FormField id="override-start" label="Start" error={errors.start_time?.message}>
-              <Input {...fieldAria("override-start", errors.start_time?.message)} type="time" step={60} className="font-mono" {...form.register("start_time")} />
+              <Input
+                {...fieldAria("override-start", errors.start_time?.message)}
+                type="time"
+                step={60}
+                className="font-mono"
+                {...form.register("start_time")}
+              />
             </FormField>
             <FormField id="override-end" label="End" error={errors.end_time?.message}>
-              <Input {...fieldAria("override-end", errors.end_time?.message)} type="time" step={60} className="font-mono" {...form.register("end_time")} />
+              <Input
+                {...fieldAria("override-end", errors.end_time?.message)}
+                type="time"
+                step={60}
+                className="font-mono"
+                {...form.register("end_time")}
+              />
             </FormField>
           </div>
         )}
 
         <FormField id="override-note" label="Note" optional error={errors.note?.message}>
-          <Input {...fieldAria("override-note", errors.note?.message)} placeholder="e.g. Annual leave, conference" {...form.register("note")} />
+          <Input
+            {...fieldAria("override-note", errors.note?.message)}
+            placeholder="e.g. Annual leave, conference"
+            {...form.register("note")}
+          />
         </FormField>
       </form>
 

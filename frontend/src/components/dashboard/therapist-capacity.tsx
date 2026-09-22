@@ -18,7 +18,9 @@ function CapacityBar({ total, booked }: { total: number; booked: number }) {
         <span
           key={index}
           className={
-            index < booked ? "flex-1 rounded-[2px] bg-primary" : "flex-1 rounded-[2px] bg-primary-soft"
+            index < booked
+              ? "flex-1 rounded-[2px] bg-primary"
+              : "flex-1 rounded-[2px] bg-primary-soft"
           }
         />
       ))}

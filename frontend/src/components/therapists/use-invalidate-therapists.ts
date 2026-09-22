@@ -10,7 +10,12 @@ import { queryKeys } from "@/lib/query/keys";
 export function useInvalidateTherapists() {
   const queryClient = useQueryClient();
   return useCallback(() => {
-    for (const queryKey of [queryKeys.therapists.all, queryKeys.schedule.all, queryKeys.dashboard, queryKeys.patients.all]) {
+    for (const queryKey of [
+      queryKeys.therapists.all,
+      queryKeys.schedule.all,
+      queryKeys.dashboard,
+      queryKeys.patients.all,
+    ]) {
       queryClient.invalidateQueries({ queryKey });
     }
   }, [queryClient]);

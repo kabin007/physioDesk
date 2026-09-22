@@ -108,7 +108,10 @@ export function PatientSessions({ patientId }: { patientId: string }) {
         noun="sessions"
         onPageChange={setPage}
       />
-      <AppointmentDetailDialog appointmentId={openId} onOpenChange={(open) => !open && setOpenId(null)} />
+      <AppointmentDetailDialog
+        appointmentId={openId}
+        onOpenChange={(open) => !open && setOpenId(null)}
+      />
     </>
   );
 }
@@ -149,7 +152,9 @@ export function PatientInvoices({ patientId }: { patientId: string }) {
           <TableBody>
             {data.items.map((invoice) => (
               <TableRow key={invoice.id}>
-                <TableCell className="font-mono text-[13px] font-medium">{invoice.invoice_number}</TableCell>
+                <TableCell className="font-mono text-[13px] font-medium">
+                  {invoice.invoice_number}
+                </TableCell>
                 <TableCell>{formatInstantDate(invoice.issued_at)}</TableCell>
                 <TableCell className="max-w-64 truncate">{invoice.service}</TableCell>
                 <TableCell className="text-right">

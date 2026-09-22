@@ -46,7 +46,8 @@ export function SlotPicker({ therapistId, date, value, onChange, invalid }: Slot
   if (!day.is_working) {
     return (
       <Hint>
-        {day.therapist_name} is not available on this date ({AVAILABILITY_LABEL[day.availability_source].toLowerCase()}).
+        {day.therapist_name} is not available on this date (
+        {AVAILABILITY_LABEL[day.availability_source].toLowerCase()}).
       </Hint>
     );
   }

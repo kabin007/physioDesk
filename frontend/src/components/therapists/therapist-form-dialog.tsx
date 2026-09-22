@@ -65,7 +65,9 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
       therapist ? updateTherapist(therapist.id, values) : createTherapist(values),
     onSuccess: (saved) => {
       invalidate();
-      toast.success(therapist ? "Therapist updated" : "Therapist added", { description: saved.name });
+      toast.success(therapist ? "Therapist updated" : "Therapist added", {
+        description: saved.name,
+      });
       onDone();
     },
     onError: (error, values) => {
@@ -73,7 +75,8 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
         setConflict(error);
         return;
       }
-      if (!applyServerFieldErrors(error, form.setError, Object.keys(values))) toast.error(errorMessage(error));
+      if (!applyServerFieldErrors(error, form.setError, Object.keys(values)))
+        toast.error(errorMessage(error));
     },
   });
 
@@ -82,7 +85,8 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
       <DialogHeader>
         <DialogTitle>{therapist ? "Edit therapist" : "Add therapist"}</DialogTitle>
         <DialogDescription>
-          The weekly schedule defines bookable slots. Date-specific changes are made with schedule overrides.
+          The weekly schedule defines bookable slots. Date-specific changes are made with schedule
+          overrides.
         </DialogDescription>
       </DialogHeader>
 
@@ -104,7 +108,10 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField id="therapist-name" label="Name" error={errors.name?.message}>
-            <Input {...fieldAria("therapist-name", errors.name?.message)} {...form.register("name")} />
+            <Input
+              {...fieldAria("therapist-name", errors.name?.message)}
+              {...form.register("name")}
+            />
           </FormField>
           <FormField id="specialty" label="Specialty" error={errors.specialty?.message}>
             <Input
@@ -130,7 +137,12 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
                 className="flex flex-wrap"
               >
                 {WEEKDAYS.map((day) => (
-                  <ToggleGroupItem key={day.value} value={String(day.value)} aria-label={day.long} className="w-14">
+                  <ToggleGroupItem
+                    key={day.value}
+                    value={String(day.value)}
+                    aria-label={day.long}
+                    className="w-14"
+                  >
                     {day.short}
                   </ToggleGroupItem>
                 ))}
@@ -158,7 +170,11 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
               {...form.register("end_time")}
             />
           </FormField>
-          <FormField id="slot_duration_minutes" label="Slot (minutes)" error={errors.slot_duration_minutes?.message}>
+          <FormField
+            id="slot_duration_minutes"
+            label="Slot (minutes)"
+            error={errors.slot_duration_minutes?.message}
+          >
             <Input
               {...fieldAria("slot_duration_minutes", errors.slot_duration_minutes?.message)}
               type="number"
@@ -180,7 +196,9 @@ function TherapistForm({ therapist, onDone }: { therapist?: Therapist; onDone: (
                 <Label htmlFor="is_active" className="text-[13px] font-medium">
                   Active
                 </Label>
-                <p className="text-xs text-muted-foreground">Inactive therapists can&apos;t be booked.</p>
+                <p className="text-xs text-muted-foreground">
+                  Inactive therapists can&apos;t be booked.
+                </p>
               </div>
               <Switch id="is_active" checked={field.value} onCheckedChange={field.onChange} />
             </div>

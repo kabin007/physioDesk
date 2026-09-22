@@ -30,8 +30,7 @@ export const createPatient = (body: PatientCreate) =>
 export const updatePatient = (id: string, body: PatientUpdate) =>
   api<Patient>(`/patients/${id}`, { method: "PATCH", body });
 
-export const deletePatient = (id: string) =>
-  api<void>(`/patients/${id}`, { method: "DELETE" });
+export const deletePatient = (id: string) => api<void>(`/patients/${id}`, { method: "DELETE" });
 
 export const listPatientAppointments = (id: string, page: number, pageSize = 10) =>
   api<Page<Appointment>>(`/patients/${id}/appointments`, {

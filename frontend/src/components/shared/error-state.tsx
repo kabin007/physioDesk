@@ -11,9 +11,17 @@ interface ErrorStateProps {
   className?: string;
 }
 
-export function ErrorState({ error, onRetry, title = "Couldn't load this", className }: ErrorStateProps) {
+export function ErrorState({
+  error,
+  onRetry,
+  title = "Couldn't load this",
+  className,
+}: ErrorStateProps) {
   return (
-    <div role="alert" className={cn("flex flex-col items-center px-6 py-12 text-center", className)}>
+    <div
+      role="alert"
+      className={cn("flex flex-col items-center px-6 py-12 text-center", className)}
+    >
       <div className="mb-3 flex size-10 items-center justify-center rounded-full bg-danger-soft text-danger">
         <AlertTriangle className="size-[18px]" aria-hidden />
       </div>

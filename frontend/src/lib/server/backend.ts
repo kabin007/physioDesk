@@ -30,7 +30,8 @@ export function backendUrl(path: string, search = ""): string {
 const cookieBase = {
   httpOnly: true,
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  // Secure by default in production; set COOKIE_SECURE=false only for plain-HTTP deployments.
+  secure: (process.env.COOKIE_SECURE ?? String(process.env.NODE_ENV === "production")) === "true",
   path: "/",
 };
 

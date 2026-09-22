@@ -18,21 +18,19 @@ async function handler(request: NextRequest, ctx: RouteContext<"/api/backend/[..
 
   const hasBody = !["GET", "HEAD", "DELETE"].includes(request.method);
   try {
-    const result = await authorizedFetch(
-      request,
-      "/" + path.map(encodeURIComponent).join("/"),
-      {
-        method: request.method,
-        search: request.nextUrl.search,
-        body: hasBody ? await request.text() : undefined,
-        contentType: hasBody ? request.headers.get("content-type") : null,
-      },
-    );
+    const result = await authorizedFetch(request, "/" + path.map(encodeURIComponent).join("/"), {
+      method: request.method,
+      search: request.nextUrl.search,
+      body: hasBody ? await request.text() : undefined,
+      contentType: hasBody ? request.headers.get("content-type") : null,
+    });
     const { response } = result;
     const body = response.status === 204 ? null : await response.text();
     const forwarded = new NextResponse(body, {
       status: response.status,
-      headers: body ? { "Content-Type": response.headers.get("content-type") ?? "application/json" } : {},
+      headers: body
+        ? { "Content-Type": response.headers.get("content-type") ?? "application/json" }
+        : {},
     });
     return applySession(forwarded, result);
   } catch {

@@ -22,7 +22,11 @@ export interface Permissions {
 
 export function permissionsFor(role: UserRole | undefined): Permissions {
   const isAdmin = role === "ADMIN";
-  return { manageTherapists: isAdmin, manageInvoices: isAdmin, readOnlyAdminAreas: role === "STAFF" };
+  return {
+    manageTherapists: isAdmin,
+    manageInvoices: isAdmin,
+    readOnlyAdminAreas: role === "STAFF",
+  };
 }
 
 const subscribeNever = () => () => {};
@@ -33,7 +37,11 @@ const subscribeNever = () => () => {};
  * even for Suspense boundaries that hydrate after the session query has resolved.
  */
 function useHydrated(): boolean {
-  return useSyncExternalStore(subscribeNever, () => true, () => false);
+  return useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  );
 }
 
 export function useSession(): { user: User | undefined; isPending: boolean } {

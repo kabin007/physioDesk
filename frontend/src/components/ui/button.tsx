@@ -1,7 +1,7 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
-import { Slot } from "radix-ui"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "cn";
+import { Slot } from "radix-ui";
 
 /**
  * Four variants only (design system): primary (brown), secondary (white + border),
@@ -13,15 +13,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "border-primary bg-primary text-primary-foreground shadow-[0_1px_1px_rgb(92_58_23/0.18)] hover:border-[#a86a31] hover:bg-[#a86a31]",
+          "border-primary bg-primary text-primary-foreground shadow-[0_1px_1px_rgb(92_58_23/0.18)] hover:border-primary-hover hover:bg-primary-hover",
         secondary:
           "border-border bg-surface text-foreground shadow-[0_1px_1px_rgb(28_38_34/0.04)] hover:bg-background aria-expanded:bg-background",
         outline:
           "border-border bg-surface text-foreground shadow-[0_1px_1px_rgb(28_38_34/0.04)] hover:bg-background aria-expanded:bg-background",
         ghost:
-          "border-transparent text-foreground hover:bg-[#efebe0] aria-expanded:bg-[#efebe0]",
+          "border-transparent text-foreground hover:bg-ghost-hover aria-expanded:bg-ghost-hover",
         destructive:
-          "border-danger bg-danger text-white hover:border-[#a13f32] hover:bg-[#a13f32] focus-visible:ring-danger/25",
+          "border-danger bg-danger text-white hover:border-danger-hover hover:bg-danger-hover focus-visible:ring-danger/25",
         link: "border-transparent px-0 text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -39,8 +39,8 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 function Button({
   className,
@@ -50,9 +50,9 @@ function Button({
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
+    asChild?: boolean;
   }) {
-  const Comp = asChild ? Slot.Root : "button"
+  const Comp = asChild ? Slot.Root : "button";
 
   return (
     <Comp
@@ -62,7 +62,7 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

@@ -41,7 +41,8 @@ export function TherapistActions({
 
   const onConflict = (error: unknown, title: string) => {
     setConfirming(null);
-    if (error instanceof ApiError && error.status === 409) setBlocked({ title, message: error.message });
+    if (error instanceof ApiError && error.status === 409)
+      setBlocked({ title, message: error.message });
     else toast.error(errorMessage(error));
   };
 
@@ -50,7 +51,9 @@ export function TherapistActions({
     onSuccess: (saved) => {
       invalidate();
       setConfirming(null);
-      toast.success(saved.is_active ? "Therapist reactivated" : "Therapist deactivated", { description: saved.name });
+      toast.success(saved.is_active ? "Therapist reactivated" : "Therapist deactivated", {
+        description: saved.name,
+      });
     },
     onError: (error) => onConflict(error, SCHEDULE_CONFLICT_TITLE),
   });

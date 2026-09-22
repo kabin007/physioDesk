@@ -23,7 +23,13 @@ import type { Invoice, PaymentMethod } from "@/types/api";
 
 import { useInvalidateBilling } from "./use-invalidate-billing";
 
-export function MarkPaidDialog({ invoice, onOpenChange }: { invoice: Invoice | null; onOpenChange: (open: boolean) => void }) {
+export function MarkPaidDialog({
+  invoice,
+  onOpenChange,
+}: {
+  invoice: Invoice | null;
+  onOpenChange: (open: boolean) => void;
+}) {
   return (
     <Dialog open={Boolean(invoice)} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[460px]">
@@ -51,8 +57,8 @@ function MarkPaidForm({ invoice, onDone }: { invoice: Invoice; onDone: () => voi
       <DialogHeader>
         <DialogTitle>Mark as paid</DialogTitle>
         <DialogDescription>
-          <span className="font-mono">{invoice.invoice_number}</span> · {invoice.patient.full_name} ·{" "}
-          <span className="font-mono">{formatMoney(invoice.total)}</span>
+          <span className="font-mono">{invoice.invoice_number}</span> · {invoice.patient.full_name}{" "}
+          · <span className="font-mono">{formatMoney(invoice.total)}</span>
         </DialogDescription>
       </DialogHeader>
       <FormField id="paid-method" label="Payment method">
@@ -71,7 +77,9 @@ function MarkPaidForm({ invoice, onDone }: { invoice: Invoice; onDone: () => voi
           ))}
         </ToggleGroup>
       </FormField>
-      <p className="text-xs text-muted-foreground">The payment is recorded now and counts toward today&apos;s revenue.</p>
+      <p className="text-xs text-muted-foreground">
+        The payment is recorded now and counts toward today&apos;s revenue.
+      </p>
       <DialogFooter>
         <Button variant="secondary" onClick={onDone} disabled={pay.isPending}>
           Cancel

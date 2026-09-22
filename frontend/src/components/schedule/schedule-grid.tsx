@@ -86,7 +86,8 @@ export function ScheduleGrid({ schedule, isToday, onOpenSlot, onAppointment }: S
                 )}
                 style={{ top: y(minute) + (minute === dayStart ? 8 : 0) }}
               >
-                {String(Math.floor(minute / 60)).padStart(2, "0")}:{String(minute % 60).padStart(2, "0")}
+                {String(Math.floor(minute / 60)).padStart(2, "0")}:
+                {String(minute % 60).padStart(2, "0")}
               </span>
             ))}
           </div>
@@ -122,7 +123,9 @@ function TherapistHeader({ therapist }: { therapist: TherapistSchedule }) {
   const source = therapist.availability_source;
   return (
     <div className="border-l border-border px-3 py-2.5">
-      <p className="truncate text-[13.5px] font-medium text-foreground">{therapist.therapist_name}</p>
+      <p className="truncate text-[13.5px] font-medium text-foreground">
+        {therapist.therapist_name}
+      </p>
       <p className="truncate text-xs text-muted-foreground">{therapist.specialty}</p>
       <div className="mt-1.5 flex items-center gap-2">
         {therapist.is_working && therapist.working_start && therapist.working_end ? (
@@ -188,7 +191,10 @@ function TherapistColumn({ therapist, y, marks, onOpenSlot, onAppointment }: The
 
       {therapist.slots.map((slot) => {
         if (slot.status === "THERAPIST_OFF") return null;
-        const style = { top: y(slot.start_time) + 2, height: y(slot.end_time) - y(slot.start_time) - 4 };
+        const style = {
+          top: y(slot.start_time) + 2,
+          height: y(slot.end_time) - y(slot.start_time) - 4,
+        };
         return slot.status === "BOOKED" ? (
           <BookedSlot key={slot.start_time} slot={slot} style={style} onClick={onAppointment} />
         ) : (

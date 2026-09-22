@@ -11,7 +11,14 @@ interface PaginationProps {
   noun?: string;
 }
 
-export function Pagination({ page, pages, total, pageSize, onPageChange, noun = "results" }: PaginationProps) {
+export function Pagination({
+  page,
+  pages,
+  total,
+  pageSize,
+  onPageChange,
+  noun = "results",
+}: PaginationProps) {
   if (total === 0) return null;
   const first = (page - 1) * pageSize + 1;
   const last = Math.min(page * pageSize, total);
@@ -21,8 +28,10 @@ export function Pagination({ page, pages, total, pageSize, onPageChange, noun = 
       className="flex items-center justify-between gap-4 border-t border-border px-4 py-3 text-[13px] text-muted-foreground"
     >
       <p>
-        <span className="font-mono text-foreground">{first}–{last}</span> of{" "}
-        <span className="font-mono text-foreground">{total}</span> {noun}
+        <span className="font-mono text-foreground">
+          {first}–{last}
+        </span>{" "}
+        of <span className="font-mono text-foreground">{total}</span> {noun}
       </p>
       <div className="flex items-center gap-2">
         <span className="hidden sm:inline">

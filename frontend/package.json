@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "gen:api": "openapi-typescript openapi.json -o src/types/api.gen.ts",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run typecheck && npm run format:check && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -37,6 +40,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.8",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

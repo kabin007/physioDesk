@@ -58,7 +58,11 @@ export function TherapistsView() {
         ) : isPending ? (
           <TableSkeleton columns={7} rows={4} />
         ) : data.length === 0 ? (
-          <EmptyState icon={Stethoscope} title="No therapists yet" description="Add a therapist to start taking bookings." />
+          <EmptyState
+            icon={Stethoscope}
+            title="No therapists yet"
+            description="Add a therapist to start taking bookings."
+          />
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -80,7 +84,11 @@ export function TherapistsView() {
               </TableHeader>
               <TableBody>
                 {data.map((therapist) => (
-                  <TableRow key={therapist.id} className="cursor-pointer" onClick={() => router.push(`/therapists/${therapist.id}`)}>
+                  <TableRow
+                    key={therapist.id}
+                    className="cursor-pointer"
+                    onClick={() => router.push(`/therapists/${therapist.id}`)}
+                  >
                     <TableCell>
                       <Link
                         href={`/therapists/${therapist.id}`}
@@ -89,7 +97,9 @@ export function TherapistsView() {
                       >
                         {therapist.name}
                       </Link>
-                      <span className="block text-[12.5px] text-muted-foreground">{therapist.specialty}</span>
+                      <span className="block text-[12.5px] text-muted-foreground">
+                        {therapist.specialty}
+                      </span>
                     </TableCell>
                     <TableCell>
                       <WorkingDays days={therapist.working_days} />
@@ -97,11 +107,19 @@ export function TherapistsView() {
                     <TableCell className="font-mono text-[13px]">
                       {formatTimeRange(therapist.start_time, therapist.end_time)}
                     </TableCell>
-                    <TableCell className="text-right font-mono text-[13px]">{therapist.slot_duration_minutes} min</TableCell>
-                    <TableCell className="text-right font-mono text-[13px]">{therapist.weekly_hours}</TableCell>
-                    <TableCell className="text-right font-mono text-[13px]">{therapist.patients_seen_today}</TableCell>
+                    <TableCell className="text-right font-mono text-[13px]">
+                      {therapist.slot_duration_minutes} min
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-[13px]">
+                      {therapist.weekly_hours}
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-[13px]">
+                      {therapist.patients_seen_today}
+                    </TableCell>
                     <TableCell>
-                      <StatusBadge meta={THERAPIST_STATUS[therapist.is_active ? "ACTIVE" : "INACTIVE"]} />
+                      <StatusBadge
+                        meta={THERAPIST_STATUS[therapist.is_active ? "ACTIVE" : "INACTIVE"]}
+                      />
                     </TableCell>
                     {manageTherapists && (
                       <TableCell onClick={(event) => event.stopPropagation()}>

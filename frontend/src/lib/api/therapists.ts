@@ -20,8 +20,7 @@ export const createTherapist = (body: TherapistCreate) =>
 export const updateTherapist = (id: string, body: TherapistUpdate) =>
   api<Therapist>(`/therapists/${id}`, { method: "PATCH", body });
 
-export const deleteTherapist = (id: string) =>
-  api<void>(`/therapists/${id}`, { method: "DELETE" });
+export const deleteTherapist = (id: string) => api<void>(`/therapists/${id}`, { method: "DELETE" });
 
 export const listOverrides = (therapistId: string) =>
   api<ScheduleOverride[]>(`/therapists/${therapistId}/schedule-overrides`);

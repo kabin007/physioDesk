@@ -88,21 +88,25 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
       onDone();
     },
     onError: (error, values) => {
-      if (!applyServerFieldErrors(error, form.setError, Object.keys(values))) toast.error(errorMessage(error));
+      if (!applyServerFieldErrors(error, form.setError, Object.keys(values)))
+        toast.error(errorMessage(error));
     },
   });
 
   // Preview only: integer cents, no floating point. The server computes the real total.
   const subtotalCents = toCents(subtotal ?? "");
   const discountCents = toCents(discount ?? "") ?? BigInt(0);
-  const total = subtotalCents !== null && discountCents <= subtotalCents ? subtotalCents - discountCents : null;
+  const total =
+    subtotalCents !== null && discountCents <= subtotalCents ? subtotalCents - discountCents : null;
 
   return (
     <>
       <DialogHeader>
         <DialogTitle>{invoice ? `Edit ${invoice.invoice_number}` : "Create invoice"}</DialogTitle>
         <DialogDescription>
-          {invoice ? `Billed to ${invoice.patient.full_name}.` : "Bill a patient for a service or package."}
+          {invoice
+            ? `Billed to ${invoice.patient.full_name}.`
+            : "Bill a patient for a service or package."}
         </DialogDescription>
       </DialogHeader>
 
@@ -139,7 +143,11 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
           />
         </FormField>
         <div className="grid gap-4 sm:grid-cols-2">
-          <FormField id="subtotal" label={`Subtotal (${CURRENCY})`} error={errors.subtotal?.message}>
+          <FormField
+            id="subtotal"
+            label={`Subtotal (${CURRENCY})`}
+            error={errors.subtotal?.message}
+          >
             <Input
               {...fieldAria("subtotal", errors.subtotal?.message)}
               inputMode="decimal"
@@ -148,7 +156,11 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
               {...form.register("subtotal")}
             />
           </FormField>
-          <FormField id="discount" label={`Discount (${CURRENCY})`} error={errors.discount?.message}>
+          <FormField
+            id="discount"
+            label={`Discount (${CURRENCY})`}
+            error={errors.discount?.message}
+          >
             <Input
               {...fieldAria("discount", errors.discount?.message)}
               inputMode="decimal"
@@ -172,20 +184,31 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
                   onValueChange={(value) => value && field.onChange(value)}
                   className="w-full"
                 >
-                  <ToggleGroupItem value="DUE" className="flex-1">Due</ToggleGroupItem>
-                  <ToggleGroupItem value="PAID" className="flex-1">Paid</ToggleGroupItem>
+                  <ToggleGroupItem value="DUE" className="flex-1">
+                    Due
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="PAID" className="flex-1">
+                    Paid
+                  </ToggleGroupItem>
                 </ToggleGroup>
               )}
             />
           </FormField>
           {status === "PAID" && (
-            <FormField id="payment_method" label="Payment method" error={errors.payment_method?.message}>
+            <FormField
+              id="payment_method"
+              label="Payment method"
+              error={errors.payment_method?.message}
+            >
               <Controller
                 control={form.control}
                 name="payment_method"
                 render={({ field }) => (
                   <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                    <SelectTrigger {...fieldAria("payment_method", errors.payment_method?.message)} className="w-full">
+                    <SelectTrigger
+                      {...fieldAria("payment_method", errors.payment_method?.message)}
+                      className="w-full"
+                    >
                       <SelectValue placeholder="How was it paid?" />
                     </SelectTrigger>
                     <SelectContent position="popper">
@@ -205,7 +228,9 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
         <dl className="space-y-1.5 rounded-lg border border-border bg-background px-4 py-3 text-[13px]">
           <div className="flex justify-between">
             <dt className="text-muted-foreground">Subtotal</dt>
-            <dd className="font-mono">{subtotalCents !== null ? formatMoney(centsToString(subtotalCents)) : "—"}</dd>
+            <dd className="font-mono">
+              {subtotalCents !== null ? formatMoney(centsToString(subtotalCents)) : "—"}
+            </dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-muted-foreground">Discount</dt>
@@ -213,7 +238,9 @@ function InvoiceForm({ invoice, onDone }: { invoice?: Invoice; onDone: () => voi
           </div>
           <div className="flex justify-between border-t border-border pt-1.5 text-sm font-medium">
             <dt>Total</dt>
-            <dd className="font-mono">{total !== null ? formatMoney(centsToString(total)) : "—"}</dd>
+            <dd className="font-mono">
+              {total !== null ? formatMoney(centsToString(total)) : "—"}
+            </dd>
           </div>
         </dl>
       </form>

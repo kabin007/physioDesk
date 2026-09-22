@@ -13,7 +13,15 @@ interface FormFieldProps {
 }
 
 /** Label + control + hint/error, wired for accessibility via ids. */
-export function FormField({ id, label, error, hint, optional, className, children }: FormFieldProps) {
+export function FormField({
+  id,
+  label,
+  error,
+  hint,
+  optional,
+  className,
+  children,
+}: FormFieldProps) {
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
       <Label htmlFor={id} className="text-[13px] font-medium text-foreground">

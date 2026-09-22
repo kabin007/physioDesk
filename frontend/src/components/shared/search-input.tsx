@@ -14,7 +14,13 @@ interface SearchInputProps {
 }
 
 /** Debounced search box: `onChange` fires once typing pauses. */
-export function SearchInput({ value, onChange, placeholder, label, delayMs = 300 }: SearchInputProps) {
+export function SearchInput({
+  value,
+  onChange,
+  placeholder,
+  label,
+  delayMs = 300,
+}: SearchInputProps) {
   const [draft, setDraft] = useState(value);
   const [synced, setSynced] = useState(value);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);

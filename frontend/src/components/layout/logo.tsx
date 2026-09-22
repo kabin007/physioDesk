@@ -4,16 +4,16 @@ import { cn } from "cn";
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={cn("size-8", className)} aria-hidden>
-      <rect width="32" height="32" rx="9" fill="#B8763A" />
+      <rect width="32" height="32" rx="9" fill="var(--pd-primary)" />
       <path
         d="M9 22.5c1.6-6.4 5.6-10.5 12.5-12"
         fill="none"
-        stroke="#F6F3EA"
+        stroke="var(--pd-background)"
         strokeWidth="2.4"
         strokeLinecap="round"
       />
-      <circle cx="9" cy="22.5" r="2.6" fill="#F6F3EA" />
-      <circle cx="22.5" cy="10.3" r="2" fill="#F0DFC7" />
+      <circle cx="9" cy="22.5" r="2.6" fill="var(--pd-background)" />
+      <circle cx="22.5" cy="10.3" r="2" fill="var(--pd-primary-soft)" />
     </svg>
   );
 }

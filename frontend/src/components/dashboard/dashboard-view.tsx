@@ -28,7 +28,11 @@ export function DashboardView() {
     <>
       <PageHeader
         title="Dashboard"
-        description={data ? `Today's clinic overview · ${formatLongDate(data.date)}` : "Today's clinic overview"}
+        description={
+          data
+            ? `Today's clinic overview · ${formatLongDate(data.date)}`
+            : "Today's clinic overview"
+        }
         actions={
           <Button asChild>
             <Link href="/schedule?book=1">
@@ -86,8 +90,12 @@ export function DashboardView() {
 
           {isPending ? (
             <>
-              <Panel><TableSkeleton rows={4} columns={3} /></Panel>
-              <Panel><TableSkeleton rows={5} columns={6} /></Panel>
+              <Panel>
+                <TableSkeleton rows={4} columns={3} />
+              </Panel>
+              <Panel>
+                <TableSkeleton rows={5} columns={6} />
+              </Panel>
             </>
           ) : (
             <>

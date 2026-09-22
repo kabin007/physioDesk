@@ -38,7 +38,12 @@ export function PatientProfile({ patientId }: { patientId: string }) {
   const [deleting, setDeleting] = useState(false);
   const [booking, setBooking] = useState(false);
 
-  const { data: patient, error, isPending, refetch } = useQuery({
+  const {
+    data: patient,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: queryKeys.patients.detail(patientId),
     queryFn: () => getPatient(patientId),
   });
@@ -108,8 +113,12 @@ export function PatientProfile({ patientId }: { patientId: string }) {
           <Tabs defaultValue="sessions" className="gap-0">
             <div className="border-b border-border px-5 pt-3">
               <TabsList variant="line" className="h-10 gap-4 p-0">
-                <TabsTrigger value="sessions" className="px-0.5">Sessions</TabsTrigger>
-                <TabsTrigger value="billing" className="px-0.5">Billing</TabsTrigger>
+                <TabsTrigger value="sessions" className="px-0.5">
+                  Sessions
+                </TabsTrigger>
+                <TabsTrigger value="billing" className="px-0.5">
+                  Billing
+                </TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="sessions">
@@ -155,8 +164,12 @@ function PatientDetails({ patient }: { patient: PatientDetail }) {
     <dl className="grid gap-x-8 gap-y-5 px-5 py-5 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => (
         <div key={item.label} className="min-w-0">
-          <dt className="text-[12px] font-medium tracking-[0.02em] text-muted-foreground">{item.label}</dt>
-          <dd className={item.mono ? "mt-1 font-mono text-[13.5px]" : "mt-1 text-sm"}>{item.value}</dd>
+          <dt className="text-[12px] font-medium tracking-[0.02em] text-muted-foreground">
+            {item.label}
+          </dt>
+          <dd className={item.mono ? "mt-1 font-mono text-[13.5px]" : "mt-1 text-sm"}>
+            {item.value}
+          </dd>
         </div>
       ))}
     </dl>

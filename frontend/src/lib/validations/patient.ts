@@ -4,7 +4,11 @@ import type { PatientCreate, PatientDetail, Patient } from "@/types/api";
 
 // Mirrors the backend's PatientCreate constraints; the API remains authoritative.
 export const patientSchema = z.object({
-  full_name: z.string().trim().min(1, "Enter the patient's name").max(120, "Keep it under 120 characters"),
+  full_name: z
+    .string()
+    .trim()
+    .min(1, "Enter the patient's name")
+    .max(120, "Keep it under 120 characters"),
   phone: z
     .string()
     .trim()
@@ -16,7 +20,11 @@ export const patientSchema = z.object({
     .max(130, "Age must be 130 or less"),
   gender: z.enum(["FEMALE", "MALE", "OTHER"], { error: "Choose a gender" }),
   address: z.string().trim().max(255, "Keep it under 255 characters"),
-  condition: z.string().trim().min(1, "Describe the condition").max(255, "Keep it under 255 characters"),
+  condition: z
+    .string()
+    .trim()
+    .min(1, "Describe the condition")
+    .max(255, "Keep it under 255 characters"),
   assigned_therapist_id: z.string(),
   package: z.string().trim().max(120, "Keep it under 120 characters"),
   status: z.enum(["ACTIVE", "COMPLETED", "ON_HOLD"]),

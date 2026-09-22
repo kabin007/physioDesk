@@ -8,7 +8,11 @@ const clock = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Use HH:MM");
 export const therapistSchema = z
   .object({
     name: z.string().trim().min(1, "Enter a name").max(120, "Keep it under 120 characters"),
-    specialty: z.string().trim().min(1, "Enter a specialty").max(120, "Keep it under 120 characters"),
+    specialty: z
+      .string()
+      .trim()
+      .min(1, "Enter a specialty")
+      .max(120, "Keep it under 120 characters"),
     working_days: z.array(z.number().int().min(1).max(7)).min(1, "Choose at least one working day"),
     start_time: clock,
     end_time: clock,
@@ -57,16 +61,24 @@ export const overrideSchema = z
   .superRefine((values, ctx) => {
     if (values.kind === "DAY_OFF") return;
     const valid = /^([01]\d|2[0-3]):[0-5]\d$/;
-    if (!valid.test(values.start_time)) ctx.addIssue({ code: "custom", path: ["start_time"], message: "Enter a start time" });
-    if (!valid.test(values.end_time)) ctx.addIssue({ code: "custom", path: ["end_time"], message: "Enter an end time" });
-    else if (valid.test(values.start_time) && minutesOf(values.end_time) <= minutesOf(values.start_time)) {
+    if (!valid.test(values.start_time))
+      ctx.addIssue({ code: "custom", path: ["start_time"], message: "Enter a start time" });
+    if (!valid.test(values.end_time))
+      ctx.addIssue({ code: "custom", path: ["end_time"], message: "Enter an end time" });
+    else if (
+      valid.test(values.start_time) &&
+      minutesOf(values.end_time) <= minutesOf(values.start_time)
+    ) {
       ctx.addIssue({ code: "custom", path: ["end_time"], message: "End must be after start" });
     }
   });
 
 export type OverrideFormValues = z.infer<typeof overrideSchema>;
 
-export function overrideDefaults(override: ScheduleOverride | undefined, date: string): OverrideFormValues {
+export function overrideDefaults(
+  override: ScheduleOverride | undefined,
+  date: string,
+): OverrideFormValues {
   return {
     date: override?.date ?? date,
     kind: override && !override.is_day_off ? "CUSTOM_HOURS" : "DAY_OFF",

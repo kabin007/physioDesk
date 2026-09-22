@@ -20,7 +20,11 @@ interface DeletePatientDialogProps {
  * The API only deletes patients without appointments or invoices (409 otherwise), so that
  * clinical and billing history is never lost. The 409 is explained, not just reported.
  */
-export function DeletePatientDialog({ patient, onOpenChange, onDeleted }: DeletePatientDialogProps) {
+export function DeletePatientDialog({
+  patient,
+  onOpenChange,
+  onDeleted,
+}: DeletePatientDialogProps) {
   const queryClient = useQueryClient();
   const [blocked, setBlocked] = useState<string | null>(null);
 

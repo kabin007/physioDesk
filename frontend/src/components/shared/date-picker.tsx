@@ -20,7 +20,15 @@ interface DatePickerProps {
 }
 
 /** Date-only picker working in "YYYY-MM-DD" strings (clinic-local calendar dates). */
-export function DatePicker({ id, value, onChange, min, placeholder = "Pick a date", className, ...aria }: DatePickerProps) {
+export function DatePicker({
+  id,
+  value,
+  onChange,
+  min,
+  placeholder = "Pick a date",
+  className,
+  ...aria
+}: DatePickerProps) {
   const [open, setOpen] = useState(false);
   const selected = value ? parseDateOnly(value) : undefined;
   return (
@@ -40,13 +48,14 @@ export function DatePicker({ id, value, onChange, min, placeholder = "Pick a dat
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
+          required
           selected={selected}
           defaultMonth={selected}
           weekStartsOn={1}
           disabled={min ? { before: parseDateOnly(min) } : undefined}
           onSelect={(date) => {
-            if (!date) return;
-            onChange(toDateOnly(date));
+            // Re-picking the selected day just closes the picker.
+            if (date) onChange(toDateOnly(date));
             setOpen(false);
           }}
         />

@@ -24,6 +24,14 @@
   --pd-text: #1c2622;
   --pd-text-muted: #797365;
 
+  /* Derived tints (interaction states within the same palette) */
+  --pd-primary-hover: #a86a31;
+  --pd-danger-hover: #a13f32;
+  --pd-surface-subtle: #faf8f2; /* table heads, panel footers */
+  --pd-row-hover: #fbfaf6;
+  --pd-ghost-hover: #efebe0;
+  --pd-skeleton: #ece7da;
+
   /* Status */
   --pd-success: #4f7c63;
   --pd-success-soft: #e1ebe3;
@@ -99,6 +107,12 @@
   --color-tertiary: var(--pd-tertiary);
   --color-tertiary-soft: var(--pd-tertiary-soft);
   --color-surface: var(--pd-surface);
+  --color-surface-subtle: var(--pd-surface-subtle);
+  --color-row-hover: var(--pd-row-hover);
+  --color-ghost-hover: var(--pd-ghost-hover);
+  --color-skeleton: var(--pd-skeleton);
+  --color-primary-hover: var(--pd-primary-hover);
+  --color-danger-hover: var(--pd-danger-hover);
   --color-success: var(--pd-success);
   --color-success-soft: var(--pd-success-soft);
   --color-danger: var(--pd-danger);

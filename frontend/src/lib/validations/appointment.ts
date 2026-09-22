@@ -24,7 +24,8 @@ export type RescheduleValues = z.infer<typeof rescheduleSchema>;
 
 /** Friendly copy for booking failures the API reports (codes from the FastAPI backend). */
 export const BOOKING_CONFLICT_MESSAGES: Record<string, string> = {
-  APPOINTMENT_CONFLICT: "That time was just booked by another user. Please choose another available slot.",
+  APPOINTMENT_CONFLICT:
+    "That time was just booked by another user. Please choose another available slot.",
   PATIENT_APPOINTMENT_CONFLICT:
     "This patient already has another appointment at that time. Please choose a different slot.",
 };

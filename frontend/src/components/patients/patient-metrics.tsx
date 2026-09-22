@@ -28,11 +28,13 @@ export function PatientMetrics({ stats }: { stats: PatientStats }) {
         <Metric label="Total paid" value={formatMoney(stats.total_paid)} mono />
         <Metric label="Outstanding" value={formatMoney(stats.outstanding_balance)} mono />
       </dl>
-      <div className="flex flex-wrap gap-x-8 gap-y-1 border-t border-border bg-[#faf8f2] px-5 py-3 text-[13px]">
+      <div className="flex flex-wrap gap-x-8 gap-y-1 border-t border-border bg-surface-subtle px-5 py-3 text-[13px]">
         <p>
           <span className="text-muted-foreground">Last visit </span>
           <span className="font-medium">
-            {stats.last_visit_date ? formatDate(stats.last_visit_date) : "No completed sessions yet"}
+            {stats.last_visit_date
+              ? formatDate(stats.last_visit_date)
+              : "No completed sessions yet"}
           </span>
         </p>
         <p>

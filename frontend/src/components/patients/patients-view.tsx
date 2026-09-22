@@ -110,7 +110,9 @@ export function PatientsView() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setFilter({ search: undefined, therapist_id: undefined, status: undefined })}
+              onClick={() =>
+                setFilter({ search: undefined, therapist_id: undefined, status: undefined })
+              }
             >
               Clear filters
             </Button>
@@ -173,7 +175,9 @@ export function PatientsView() {
                       <TableCell className="font-mono text-[13px] text-muted-foreground">
                         {patient.phone}
                       </TableCell>
-                      <TableCell className="text-right font-mono text-[13px]">{patient.age}</TableCell>
+                      <TableCell className="text-right font-mono text-[13px]">
+                        {patient.age}
+                      </TableCell>
                       <TableCell className="max-w-56 truncate">{patient.condition}</TableCell>
                       <TableCell>
                         {patient.assigned_therapist?.name ?? (
@@ -189,7 +193,11 @@ export function PatientsView() {
                       <TableCell onClick={(event) => event.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${patient.full_name}`}>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label={`Actions for ${patient.full_name}`}
+                            >
                               <MoreHorizontal />
                             </Button>
                           </DropdownMenuTrigger>
@@ -205,7 +213,10 @@ export function PatientsView() {
                               Edit details
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive" onSelect={() => setDeleting(patient)}>
+                            <DropdownMenuItem
+                              variant="destructive"
+                              onSelect={() => setDeleting(patient)}
+                            >
                               <Trash2 aria-hidden />
                               Delete patient
                             </DropdownMenuItem>

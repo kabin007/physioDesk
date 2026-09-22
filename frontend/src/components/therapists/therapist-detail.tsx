@@ -30,7 +30,12 @@ export function TherapistDetail({ therapistId }: { therapistId: string }) {
   const router = useRouter();
   const { manageTherapists } = usePermissions();
   const [editing, setEditing] = useState(false);
-  const { data: therapist, error, isPending, refetch } = useQuery({
+  const {
+    data: therapist,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: queryKeys.therapists.detail(therapistId),
     queryFn: () => getTherapist(therapistId),
   });
@@ -75,7 +80,11 @@ export function TherapistDetail({ therapistId }: { therapistId: string }) {
                   <Pencil aria-hidden />
                   Edit
                 </Button>
-                <TherapistActions therapist={therapist} trigger="button" onDeleted={() => router.replace("/therapists")} />
+                <TherapistActions
+                  therapist={therapist}
+                  trigger="button"
+                  onDeleted={() => router.replace("/therapists")}
+                />
               </>
             )}
           </>
@@ -87,7 +96,9 @@ export function TherapistDetail({ therapistId }: { therapistId: string }) {
         <OverridesPanel therapist={therapist} canManage={manageTherapists} />
       </div>
 
-      {manageTherapists && <TherapistFormDialog open={editing} onOpenChange={setEditing} therapist={therapist} />}
+      {manageTherapists && (
+        <TherapistFormDialog open={editing} onOpenChange={setEditing} therapist={therapist} />
+      )}
     </>
   );
 }
@@ -109,9 +120,13 @@ function WeeklySchedule({ therapist }: { therapist: Therapist }) {
           const works = therapist.working_days.includes(day.value);
           return (
             <li key={day.value} className="flex items-center justify-between px-5 py-3 text-sm">
-              <span className={cn("font-medium", !works && "text-muted-foreground")}>{day.long}</span>
+              <span className={cn("font-medium", !works && "text-muted-foreground")}>
+                {day.long}
+              </span>
               {works ? (
-                <span className="font-mono text-[13px]">{formatTimeRange(therapist.start_time, therapist.end_time)}</span>
+                <span className="font-mono text-[13px]">
+                  {formatTimeRange(therapist.start_time, therapist.end_time)}
+                </span>
               ) : (
                 <span className="text-[13px] text-muted-foreground">Not working</span>
               )}

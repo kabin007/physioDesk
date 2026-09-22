@@ -21,7 +21,13 @@ import type { ScheduleOverride, Therapist } from "@/types/api";
 import { OverrideDialog } from "./override-dialog";
 import { useInvalidateTherapists } from "./use-invalidate-therapists";
 
-export function OverridesPanel({ therapist, canManage }: { therapist: Therapist; canManage: boolean }) {
+export function OverridesPanel({
+  therapist,
+  canManage,
+}: {
+  therapist: Therapist;
+  canManage: boolean;
+}) {
   const invalidate = useInvalidateTherapists();
   const [dialog, setDialog] = useState<{ override?: ScheduleOverride } | null>(null);
   const [removing, setRemoving] = useState<ScheduleOverride | null>(null);
@@ -87,7 +93,7 @@ export function OverridesPanel({ therapist, canManage }: { therapist: Therapist;
         </ul>
       )}
       {past.length > 0 && (
-        <p className="border-t border-border bg-[#faf8f2] px-5 py-2.5 text-xs text-muted-foreground">
+        <p className="border-t border-border bg-surface-subtle px-5 py-2.5 text-xs text-muted-foreground">
           {past.length} past override{past.length === 1 ? "" : "s"} kept as history.
         </p>
       )}
@@ -121,7 +127,9 @@ export function OverridesPanel({ therapist, canManage }: { therapist: Therapist;
             description={
               <>
                 <p>{blocked}</p>
-                <p className="mt-2">Reschedule or cancel those appointments first, then try again.</p>
+                <p className="mt-2">
+                  Reschedule or cancel those appointments first, then try again.
+                </p>
               </>
             }
             confirmLabel="Got it"
@@ -157,9 +165,13 @@ function OverrideRow({
         </span>
       ) : (
         <span className="flex items-center gap-2">
-          <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-primary-ink">Custom hours</span>
+          <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-primary-ink">
+            Custom hours
+          </span>
           <span className="font-mono text-[13px]">
-            {override.start_time && override.end_time && formatTimeRange(override.start_time, override.end_time)}
+            {override.start_time &&
+              override.end_time &&
+              formatTimeRange(override.start_time, override.end_time)}
           </span>
         </span>
       )}

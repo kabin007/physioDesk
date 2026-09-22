@@ -86,7 +86,10 @@ function BookingForm({ initial, onDone }: { initial?: BookingPrefill; onDone: ()
     },
   });
   const { errors } = form.formState;
-  const [therapistId, date] = useWatch({ control: form.control, name: ["therapist_id", "appointment_date"] });
+  const [therapistId, date] = useWatch({
+    control: form.control,
+    name: ["therapist_id", "appointment_date"],
+  });
 
   const book = useMutation({
     mutationFn: (values: BookingValues) =>
@@ -119,7 +122,9 @@ function BookingForm({ initial, onDone }: { initial?: BookingPrefill; onDone: ()
     <>
       <DialogHeader>
         <DialogTitle>Book appointment</DialogTitle>
-        <DialogDescription>Only times the therapist actually has free can be chosen.</DialogDescription>
+        <DialogDescription>
+          Only times the therapist actually has free can be chosen.
+        </DialogDescription>
       </DialogHeader>
 
       <form
@@ -183,13 +188,20 @@ function BookingForm({ initial, onDone }: { initial?: BookingPrefill; onDone: ()
               )}
             />
           </FormField>
-          <FormField id="payment_method" label="Payment method" error={errors.payment_method?.message}>
+          <FormField
+            id="payment_method"
+            label="Payment method"
+            error={errors.payment_method?.message}
+          >
             <Controller
               control={form.control}
               name="payment_method"
               render={({ field }) => (
                 <Select value={field.value ?? ""} onValueChange={field.onChange}>
-                  <SelectTrigger {...fieldAria("payment_method", errors.payment_method?.message)} className="w-full">
+                  <SelectTrigger
+                    {...fieldAria("payment_method", errors.payment_method?.message)}
+                    className="w-full"
+                  >
                     <SelectValue placeholder="How will they pay?" />
                   </SelectTrigger>
                   <SelectContent position="popper">
@@ -240,7 +252,11 @@ function BookingForm({ initial, onDone }: { initial?: BookingPrefill; onDone: ()
                 className="w-full sm:w-auto"
               >
                 {enumOptions(SESSION_TYPE_LABEL).map((option) => (
-                  <ToggleGroupItem key={option.value} value={option.value} className="flex-1 px-4 sm:flex-none">
+                  <ToggleGroupItem
+                    key={option.value}
+                    value={option.value}
+                    className="flex-1 px-4 sm:flex-none"
+                  >
                     {option.label}
                   </ToggleGroupItem>
                 ))}

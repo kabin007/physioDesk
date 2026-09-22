@@ -77,7 +77,10 @@ function toClinicLocal(value: string): { date: string; time: string } {
   const parts = Object.fromEntries(
     clinicParts.formatToParts(new Date(value)).map((part) => [part.type, part.value]),
   );
-  return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` };
+  return {
+    date: `${parts.year}-${parts.month}-${parts.day}`,
+    time: `${parts.hour}:${parts.minute}`,
+  };
 }
 
 /** "22 Sep 2026" in the clinic timezone. */

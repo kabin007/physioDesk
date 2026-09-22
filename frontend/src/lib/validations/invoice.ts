@@ -11,7 +11,11 @@ const amount = z
 // Mirrors the API's rules for UX; the backend still validates and computes the total.
 export const invoiceSchema = z
   .object({
-    service: z.string().trim().min(1, "Describe the service").max(200, "Keep it under 200 characters"),
+    service: z
+      .string()
+      .trim()
+      .min(1, "Describe the service")
+      .max(200, "Keep it under 200 characters"),
     subtotal: amount,
     discount: amount,
     status: z.enum(["DUE", "PAID"]),
@@ -21,7 +25,11 @@ export const invoiceSchema = z
     const subtotal = toCents(values.subtotal);
     const discount = toCents(values.discount);
     if (subtotal !== null && discount !== null && discount > subtotal) {
-      ctx.addIssue({ code: "custom", path: ["discount"], message: "Discount can't exceed the subtotal" });
+      ctx.addIssue({
+        code: "custom",
+        path: ["discount"],
+        message: "Discount can't exceed the subtotal",
+      });
     }
     if (values.status === "PAID" && !values.payment_method) {
       ctx.addIssue({ code: "custom", path: ["payment_method"], message: "Choose how it was paid" });

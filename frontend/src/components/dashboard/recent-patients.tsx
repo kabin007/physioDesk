@@ -33,7 +33,11 @@ export function RecentPatients({ patients }: { patients: RecentPatient[] }) {
         }
       />
       {patients.length === 0 ? (
-        <EmptyState icon={UserPlus} title="No patients yet" description="New patients will appear here." />
+        <EmptyState
+          icon={UserPlus}
+          title="No patients yet"
+          description="New patients will appear here."
+        />
       ) : (
         <div className="overflow-x-auto">
           <Table>
