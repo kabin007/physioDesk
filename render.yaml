@@ -1,0 +1,39 @@
+# Render blueprint for the PhysioDesk API.
+#
+# The database is NOT defined here on purpose: Render's free PostgreSQL is deleted after
+# 30 days, while the app needs a database that lasts. Create a free Neon project instead
+# (it keeps the `btree_gist` and `pg_trgm` extensions this schema requires) and paste its
+# connection string into DATABASE_URL when Render asks.
+#
+# Deploy: Render Dashboard -> New -> Blueprint -> pick this repository.
+
+services:
+  - type: web
+    name: physiodesk-api
+    runtime: docker
+    plan: free
+    # Nearest region to the clinic timezone; change if your users are elsewhere.
+    region: singapore
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: LOG_LEVEL
+        value: INFO
+      # Generated once by Render and kept across deploys. Changing it signs everyone out.
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      # Paste your Neon connection string verbatim, including ?sslmode=require.
+      - key: DATABASE_URL
+        sync: false
+      - key: CLINIC_TIMEZONE
+        value: Asia/Kathmandu
+      # Only needed if a browser ever calls this API directly. The Next.js app talks to it
+      # server-side through its BFF routes, so CORS normally never comes into play.
+      - key: CORS_ORIGINS
+        sync: false

@@ -6,10 +6,47 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+from sqlalchemy.engine import make_url
 
 # Substrings that mark a secret as a development placeholder. Such secrets are rejected in
 # production so a copied `.env.example` can never end up signing real tokens.
 _PLACEHOLDER_SECRET_MARKERS = ("change-me", "insecure", "example")
+
+# Schemes managed providers hand out, all meaning "PostgreSQL over the default driver".
+_SYNC_POSTGRES_SCHEMES = ("postgres", "postgresql")
+
+# libpq connection parameters that asyncpg does not accept as keyword arguments. Managed
+# providers put them in the connection strings they give you (Neon adds `channel_binding`),
+# and passing them through would fail at connect time with an opaque TypeError.
+_LIBPQ_ONLY_PARAMS = ("channel_binding", "sslrootcert", "sslcert", "sslkey", "sslnegotiation")
+
+
+def _normalise_database_url(value: str) -> str:
+    """Accept the connection string a hosted provider gives you, verbatim.
+
+    Neon, Supabase and Render hand out libpq-flavoured URLs such as
+    `postgresql://user:pw@host/db?sslmode=require&channel_binding=require`. This rewrites
+    them into what asyncpg understands: the `postgresql+asyncpg` scheme, `sslmode` spelled
+    as asyncpg's `ssl`, and libpq-only parameters dropped.
+    """
+    url = make_url(value)
+
+    if url.drivername in _SYNC_POSTGRES_SCHEMES:
+        url = url.set(drivername="postgresql+asyncpg")
+    if url.drivername != "postgresql+asyncpg":
+        raise ValueError(
+            "DATABASE_URL must be a PostgreSQL URL "
+            "(postgresql://…, postgres://… or postgresql+asyncpg://…), "
+            f"got {url.drivername!r}"
+        )
+
+    query = {key: value for key, value in url.query.items() if key not in _LIBPQ_ONLY_PARAMS}
+    sslmode = query.pop("sslmode", None)
+    if sslmode is not None and "ssl" not in query:
+        # asyncpg spells libpq's `sslmode` as `ssl`, accepting the same mode names.
+        query["ssl"] = sslmode
+
+    return url.set(query=query).render_as_string(hide_password=False)
 
 
 class Settings(BaseSettings):
@@ -44,10 +81,8 @@ class Settings(BaseSettings):
 
     @field_validator("database_url")
     @classmethod
-    def _require_async_driver(cls, value: str) -> str:
-        if not value.startswith("postgresql+asyncpg://"):
-            raise ValueError("DATABASE_URL must use the 'postgresql+asyncpg://' scheme")
-        return value
+    def _normalise_url(cls, value: str) -> str:
+        return _normalise_database_url(value)
 
     @field_validator("cors_origins", mode="before")
     @classmethod

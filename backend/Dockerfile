@@ -23,4 +23,6 @@ USER appuser
 
 EXPOSE 8000
 # Apply migrations, then serve. Seeding stays an explicit step (make seed / docker compose exec).
-CMD ["sh", "-c", "alembic upgrade head && fastapi run app/main.py --port 8000"]
+# $PORT is honoured so the same image runs on hosts that assign the port (Render, Railway,
+# Koyeb, Fly); locally nothing sets it and the usual 8000 applies.
+CMD ["sh", "-c", "alembic upgrade head && fastapi run app/main.py --host 0.0.0.0 --port ${PORT:-8000}"]
