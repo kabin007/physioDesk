@@ -44,7 +44,15 @@ function useHydrated(): boolean {
   );
 }
 
-export function useSession(): { user: User | undefined; isPending: boolean } {
+export interface Session {
+  user: User | undefined;
+  isPending: boolean;
+  /** The session request settled in failure (typically an unreachable API). */
+  isError: boolean;
+  retry: () => void;
+}
+
+export function useSession(): Session {
   const hydrated = useHydrated();
   const query = useQuery({
     queryKey: queryKeys.session,
@@ -54,6 +62,11 @@ export function useSession(): { user: User | undefined; isPending: boolean } {
   return {
     user: hydrated ? query.data : undefined,
     isPending: !hydrated || query.isPending,
+    // The sidebar never unmounts, so a failed session query would otherwise stay
+    // stuck on its loading state for the rest of the visit. Surface the failure
+    // instead, and let the user retry it.
+    isError: hydrated && query.isError,
+    retry: () => void query.refetch(),
   };
 }
 
